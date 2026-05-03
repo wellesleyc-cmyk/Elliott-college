@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Elliott's College Comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tufts-blue: #3E8EDE;
+    --tufts-brown: #8B5E3C;
+    --tufts-light: #EBF4FF;
+    --bc-maroon: #8C1515;
+    --bc-gold: #C8A951;
+    --bc-light: #FFF5F5;
+    --scu-red: #B2011D;
+    --scu-blue: #003B71;
+    --scu-light: #FFF0F0;
+    --bg: #0D0D12;
+    --surface: #16161F;
+    --surface2: #1E1E2A;
+    --border: rgba(255,255,255,0.08);
+    --text: #F0EFE8;
+    --muted: #888899;
+    --accent: #C8F069;
+    --radius: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: env(safe-area-inset-top, 60px) 24px 80px;
+    padding-top: max(60px, env(safe-area-inset-top));
+    position: relative;
+    background: radial-gradient(ellipse at 30% 40%, rgba(62,142,222,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 60%, rgba(140,21,21,0.12) 0%, transparent 60%),
+                var(--bg);
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 10vw, 120px);
+    line-height: 0.9;
+    letter-spacing: 0.01em;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.4s;
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 480px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.6s;
+  }
+
+  .school-pills {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.8s;
+  }
+
+  .pill {
+    padding: 10px 22px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    border: 1.5px solid;
+  }
+  .pill-tufts { border-color: var(--tufts-blue); color: var(--tufts-blue); background: rgba(62,142,222,0.1); }
+  .pill-bc { border-color: var(--bc-maroon); color: #E8706E; background: rgba(140,21,21,0.1); }
+  .pill-scu { border-color: #E8706E; color: #E8A06E; background: rgba(178,1,29,0.1); }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 1.2s;
+  }
+
+  .scroll-hint::after {
+    content: '';
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--muted), transparent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,13,18,0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  nav::-webkit-scrollbar { display: none; }
+
+  .nav-btn {
+    padding: 18px 16px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.2s;
+    font-family: 'DM Mono', monospace;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 52px;
+  }
+  .nav-btn:hover, .nav-btn.active { color: var(--accent); }
+
+  /* SECTIONS */
+  section {
+    padding: 60px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 480px) {
+    section { padding: 48px 16px; }
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(30px, 6vw, 60px);
+    line-height: 1;
+    margin-bottom: 32px;
+  }
+
+  /* SCHOOL LEGEND */
+  .legend {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* RADAR CHART */
+  .radar-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  @media (max-width: 700px) {
+    .radar-wrap { grid-template-columns: 1fr; }
+  }
+
+  canvas {
+    width: 100% !important;
+    max-width: 420px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  /* DIMENSION CARDS */
+  .dim-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  @media (max-width: 480px) {
+    .dim-grid { grid-template-columns: 1fr; }
+  }
+
+  .dim-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .dim-card:hover {
+    border-color: rgba(200,240,105,0.3);
+    transform: translateY(-2px);
+  }
+
+  .dim-card-school {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .school-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .dim-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .dim-card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* SCORE BARS */
+  .score-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 480px) {
+    .score-section { padding: 18px 14px; border-radius: 12px; }
+  }
+
+  .score-section h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    margin-bottom: 24px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .score-section h3 .icon { font-size: 20px; }
+
+  .bar-group {
+    margin-bottom: 20px;
+  }
+
+  .bar-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .bar-label strong { color: var(--text); font-size: 13px; }
+
+  .bar-track {
+    height: 8px;
+    background: var(--surface2);
+    border-radius: 100px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 100px;
+    transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    width: 0%;
+  }
+
+  .bar-tufts { background: var(--tufts-blue); }
+  .bar-bc { background: var(--bc-maroon); }
+  .bar-scu { background: #E87A2A; }
+
+  /* STAT BOXES */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 500px) {
+    .stats-grid { grid-template-columns: 1fr; gap: 10px; }
+  }
+
+  .stat-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+
+  .stat-box.tufts::before { background: var(--tufts-blue); }
+  .stat-box.bc::before { background: var(--bc-maroon); }
+  .stat-box.scu::before { background: #E87A2A; }
+
+  .stat-school {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-box.tufts .stat-number { color: var(--tufts-blue); }
+  .stat-box.bc .stat-number { color: #E8706E; }
+  .stat-box.scu .stat-number { color: #E87A2A; }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* DONUT CHARTS */
+  .donut-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 600px) {
+    .donut-row { grid-template-columns: 1fr; gap: 12px; }
+  }
+
+  .donut-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+  }
+
+  .donut-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  /* VERDICT BOX */
+  .verdict {
+    background: linear-gradient(135deg, rgba(200,240,105,0.08) 0%, rgba(62,142,222,0.08) 100%);
+    border: 1px solid rgba(200,240,105,0.2);
+    border-radius: var(--radius);
+    padding: 36px;
+    margin-top: 60px;
+  }
+
+  .verdict-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .verdict h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+
+  .verdict p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 700px;
+  }
+
+  /* SPORTS TABLE */
+  .sports-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  @media (max-width: 700px) {
+    .sports-grid { grid-template-columns: 1fr; }
+  }
+
+  .sports-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .sports-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sports-school {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .sports-conference {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+  }
+
+  .sports-div {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .sports-body {
+    padding: 20px 24px;
+  }
+
+  .sports-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    margin: 3px 2px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .sports-tag.hot {
+    border-color: rgba(200,240,105,0.4);
+    color: var(--accent);
+    background: rgba(200,240,105,0.06);
+  }
+
+  /* COMPARISON TABLE */
+  .compare-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--surface);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .compare-table th, .compare-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  @media (max-width: 480px) {
+    .compare-table th, .compare-table td {
+      padding: 11px 12px;
+      font-size: 12px;
+    }
+  }
+
+  .compare-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--surface2);
+  }
+
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .compare-table td:first-child {
+    color: var(--muted);
+    font-size: 12px;
+    width: 30%;
+  }
+
+  .winner { color: var(--accent); font-weight: 700; }
+
+  /* EMOJI BADGES */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    margin-left: 6px;
+    text-transform: uppercase;
+  }
+
+  .badge-win { background: rgba(200,240,105,0.15); color: var(--accent); border: 1px solid rgba(200,240,105,0.3); }
+  .badge-ok { background: rgba(255,255,255,0.06); color: var(--muted); border: 1px solid var(--border); }
+
+  /* DIVIDER */
+  .section-divider {
+    height: 1px;
+    background: var(--border);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 24px;
+    padding-bottom: max(40px, env(safe-area-inset-bottom));
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.1em;
+    border-top: 1px solid var(--border);
+  }
+
+  footer span { color: var(--accent); }
+
+  /* SOCIAL VIBE ICONS */
+  .vibe-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: 700px) {
+    .vibe-grid { grid-template-columns: 1fr; }
+  }
+
+  .vibe-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+  }
+
+  .vibe-school {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .vibe-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    margin-bottom: 16px;
+  }
+
+  .vibe-name.tufts { color: var(--tufts-blue); }
+  .vibe-name.bc { color: #E8706E; }
+  .vibe-name.scu { color: #E87A2A; }
+
+  .vibe-trait {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .vibe-trait .emoji { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  /* HIGHLIGHT ROW */
+  .highlight-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: 480px) {
+    .highlight-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .highlight-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .highlight-box .big { font-family: 'Bebas Neue', sans-serif; font-size: 28px; }
+  .highlight-box .small { font-size: 11px; color: var(--muted); }
+  .highlight-box.tufts .big { color: var(--tufts-blue); }
+  .highlight-box.bc .big { color: #E8706E; }
+  .highlight-box.scu .big { color: #E87A2A; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Elliott's Decision · Class of 2028</div>
+  <h1>Pick Your<br><span>Future</span></h1>
+  <p class="hero-sub">A no-fluff breakdown of three schools across every dimension that actually matters.</p>
+  <div class="school-pills">
+    <div class="pill pill-tufts">🐘 Tufts University</div>
+    <div class="pill pill-bc">🦅 Boston College</div>
+    <div class="pill pill-scu">⚡ Santa Clara</div>
+  </div>
+  <div class="scroll-hint">SCROLL</div>
+</div>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <button class="nav-btn active" onclick="scrollTo('academics')">Academics</button>
+  <button class="nav-btn" onclick="scrollTo('biology')">Biology</button>
+  <button class="nav-btn" onclick="scrollTo('career')">Career</button>
+  <button class="nav-btn" onclick="scrollTo('social')">Social</button>
+  <button class="nav-btn" onclick="scrollTo('demographics')">People</button>
+  <button class="nav-btn" onclick="scrollTo('sports')">Sports</button>
+  <button class="nav-btn" onclick="scrollTo('verdict')">Verdict</button>
+</nav>
+
+<!-- ACADEMICS -->
+<section id="academics">
+  <div class="reveal">
+    <div class="section-label">01 — Overall Academics</div>
+    <div class="section-title">How Do They Stack Up?</div>
+
+    <div class="stats-grid">
+      <div class="stat-box tufts">
+        <div class="stat-school">Tufts</div>
+        <div class="stat-number">#37</div>
+        <div class="stat-label">US News National Rank</div>
+      </div>
+      <div class="stat-box bc">
+        <div class="stat-school">Boston College</div>
+        <div class="stat-number">#37</div>
+        <div class="stat-label">US News National Rank (tied)</div>
+      </div>
+      <div class="stat-box scu">
+        <div class="stat-school">Santa Clara</div>
+        <div class="stat-number">#59</div>
+        <div class="stat-label">US News National Rank</div>
+      </div>
+    </div>
+
+    <div class="score-section">
+      <h3><span class="icon">📊</span> Academic Dimension Scores</h3>
+
+      <div class="bar-group">
+        <div class="bar-label"><strong>Overall Prestige / Research Depth</strong></div>
+        <div class="bar-track"><div class="bar-fill bar-tufts" data-width="88"></div></div>
+        <div class="bar-label"><span>Tufts</span><span>88</span></div>
+        <div class="bar-track"><div class="bar-fill bar-bc" data-width="85"></div></div>
+        <div class="bar-label"><span>Boston College</span><span>85</span></div>
+        <div class="bar-track"><div class="bar-fill bar-scu" data-width="68"></div></div>
+        <div class="bar-label"><span>Santa Clara</span><span>68</span></div>
+      </div>
+
+      <div class="bar-group">
+        <div class="bar-label"><strong>Undergraduate Teaching Quality</strong></div>
+        <div class="bar-track"><div class="bar-fill bar-tufts" data-width="82"></div></div>
+        <div class="bar-label"><span>Tufts</span><span>82</span></div>
+        <div class="bar-track"><div class="bar-fill bar-bc" data-width="95"></div></div>
+        <div class="bar-label"><span>Boston College — #6 nationally</span><span>95</span></div>
+        <div class="bar-track"><div class="bar-fill bar-scu" data-width="86"></div></div>
+        <div class="bar-label"><span>Santa Clara — #23 nationally</span><span>86</span></div>
+      </div>
+
+      <div class="bar-group">
+        <div class="bar-label"><strong>Faculty Access / Class Size</strong></div>
+        <div class="bar-track"><div class="bar-fill bar-tufts" data-width="84"></div></div>
+        <div class="bar-label"><span>Tufts — avg class size 20</span><span>84</span></div>
+        <div class="bar-track"><div class="bar-fill bar-bc" data-width="86"></div></div>
+        <div class="bar-label"><span>Boston College — 10:1 ratio</span><span>86</span></div>
+        <div class="bar-track"><div class="bar-fill bar-scu" data-width="90"></div></div>
+        <div class="bar-label"><span>Santa Clara — 11:1 ratio</span><span>90</span></div>
+      </div>
+
+      <div class="bar-group">
+        <div class="bar-label"><strong>Graduate / PhD Pipeline</strong></div>
+        <div class="bar-track"><div class="bar-fill bar-tufts" data-width="90"></div></div>
+        <div class="bar-label"><span>Tufts — R1 research university</span><span>90</span></div>
+        <div class="bar-track"><div class="bar-fill bar-bc" data-width="80"></div></div>
+        <div class="bar-label"><span>Boston College — R1 research university</span><span>80</span></div>
+        <div class="bar-track"><div class="bar-fill bar-scu" data-width="58"></div></div>
+        <div class="bar-label"><span>Santa Clara</span><span>58</span></div>
+      </div>
+    </div>
+
+    <div class="highlight-row">
+      <div class="highlight-box tufts">
+        <div class="small">Tufts acceptance rate</div>
+        <div class="big">10%</div>
+        <div class="small">Class of 2028</div>
+      </div>
+      <div class="highlight-box bc">
+        <div class="small">BC acceptance rate</div>
+        <div class="big">13%</div>
+        <div class="small">Class of 2030</div>
+      </div>
+      <div class="highlight-box scu">
+        <div class="small">SCU acceptance rate</div>
+        <div class="big">~40%</div>
+        <div class="small">Holistic review</div>
+      </div>
+      <div class="highlight-box tufts">
+        <div class="small">Tufts 4-yr grad rate</div>
+        <div class="big">88%</div>
+      </div>
+      <div class="highlight-box bc">
+        <div class="small">BC 4-yr grad rate</div>
+        <div class="big">86%</div>
+      </div>
+      <div class="highlight-box scu">
+        <div class="small">SCU 4-yr grad rate</div>
+        <div class="big">81%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- BIOLOGY -->
+<section id="biology">
+  <div class="reveal">
+    <div class="section-label">02 — Biology & Sciences</div>
+    <div class="section-title">The Science Scene</div>
+
+    <div class="score-section">
+      <h3><span class="icon">🔬</span> Science & Biology Strengths</h3>
+
+      <div class="bar-group">
+        <div class="bar-label"><strong>Biology Dept Quality</strong></div>
+        <div class="bar-track"><div class="bar-fill bar-tufts" data-width="90"></div></div>
+        <div class="bar-label"><span>Tufts — broad interdisciplinary dept</span><span>90</span></div>
+        <div class="bar-track"><div class="bar-fill bar-bc" data-width="52"></div></div>
+        <div class="bar-label"><span>Boston College — weak relative to rank</span><span>52</span></div>
+        <div class="bar-track"><div class="bar-fill bar-scu" data-width="68"></div></div>
+        <div class="bar-label"><span>Santa Clara — solid, hands-on focus</span><span>68</span></div>
+      </div>
+
+      <div class="bar-group">
+        <div class="bar-label"><strong>Undergraduate Research Access</strong></div>
+        <div class="bar-track"><div class="bar-fill bar-tufts" data-width="92"></div></div>
+        <div class="bar-label"><span>Tufts — active labs, urge soph to join</span><span>92</span></div>
+        <div class="bar-track"><div class="bar-fill bar-bc" data-width="55"></div></div>
+        <div class="bar-label"><span>Boston College — limited for undergrads</span><span>55</span></div>
+        <div class="bar-track"><div class="bar-fill bar-scu" data-width="65"></div></div>
+        <div class="bar-label"><span>Santa Clara</span><span>65</span></div>
+      </div>
+
+      <div class="bar-group">
+        <div class="bar-label"><strong>Marine Biology / Ecology</strong></div>
+        <div class="bar-track"><div class="bar-fill bar-tufts" data-width="80"></div></div>
+        <div class="bar-label"><span>Tufts — Rotjan Lab, active marine ecology</span><span>80</span></div>
+        <div class="bar-track"><div class="bar-fill bar-bc" data-width="20"></div></div>
+        <div class="bar-label"><span>Boston College — minimal</span><span>20</span></div>
+        <div class="bar-track"><div class="bar-fill bar-scu" data-width="18"></div></div>
+        <div class="bar-label"><span>Santa Clara — minimal</span><span>18</span></div>
+      </div>
+
+      <div class="bar-group">
+        <div class="bar-label"><strong>Premed Infrastructure</strong></div>
+        <div class="bar-track"><div class="bar-fill bar-tufts" data-width="96"></div></div>
+        <div class="bar-label"><span>Tufts — affiliated med school + EAP</span><span>96</span></div>
+        <div class="bar-track"><div class="bar-fill bar-bc" data-width="70"></div></div>
+        <div class="bar-label"><span>Boston College — advising + volume pipeline</span><span>70</span></div>
+        <div class="bar-track"><div class="bar-fill bar-scu" data-width="62"></div></div>
+        <div class="bar-label"><span>Santa Clara</span><span>62</span></div>
+      </div>
+    </div>
+
+    <div class="dim-grid">
+      <div class="dim-card">
+        <div class="dim-card-school"><div class="school-dot" style="background:var(--tufts-blue)"></div>Tufts</div>
+        <h3>🏆 Clear Winner for Bio</h3>
+        <p>Interdisciplinary dept where biochemists work alongside marine ecologists. Active Rotjan Lab in marine ecology welcomes sophomores. BS/MS in 5 years for top students. Biotech co-major available. Affiliated med school pipeline is unmatched.</p>
+      </div>
+      <div class="dim-card">
+        <div class="dim-card-school"><div class="school-dot" style="background:var(--bc-maroon)"></div>Boston College</div>
+        <h3>⚠️ The Known Weakness</h3>
+        <p>BC's science programs are widely acknowledged as underperforming relative to its overall ranking. The school excels in business, nursing, and humanities. Premed students succeed through drive, not institutional science infrastructure.</p>
+      </div>
+      <div class="dim-card">
+        <div class="dim-card-school"><div class="school-dot" style="background:#E87A2A"></div>Santa Clara</div>
+        <h3>✅ Solid but Limited</h3>
+        <p>Good hands-on biology program with close faculty relationships. Strong emphasis on lab and field work. No affiliated med school, no marine science pathway, no named research labs with active undergrad slots. Good for what it is.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- CAREER -->
+<section id="career">
+  <div class="reveal">
+    <div class="section-label">03 — Career, Internships & Networking</div>
+    <div class="section-title">Where Will It Take You?</div>
+
+    <div class="score-section">
+      <h3><span class="icon">💼</span> Career Launchpad Scores</h3>
+
+      <div class="bar-group">
+        <div class="bar-label"><strong>Biotech / Life Sciences Industry Access</strong></div>
+        <div class="bar-track"><div class="bar-fill bar-tufts" data-width="95"></div></div>
+        <div class="bar-label"><span>Tufts — heart of Boston biotech corridor</span><span>95</span></div>
+        <div class="bar-track"><div class="bar-fill bar-bc" data-width="80"></div></div>
+        <div class="bar-label"><span>Boston College — strong Boston access</span><span>80</span></div>
+        <div class="bar-track"><div class="bar-fill bar-scu" data-width="75"></div></div>
+        <div class="bar-label"><span>Santa Clara — Silicon Valley biotech</span><span>75</span></div>
+      </div>
+
+      <div class="bar-group">
+        <div class="bar-label"><strong>Med School Pathway Strength</strong></div>
+        <div class="bar-track"><div class="bar-fill bar-tufts" data-width="96"></div></div>
+        <div class="bar-label"><span>Tufts — Early Assurance Program to Tufts Med</span><span>96</span></div>
+        <div class="bar-track"><div class="bar-fill bar-bc" data-width="72"></div></div>
+        <div class="bar-label"><span>Boston College — 210 applicants/cycle</span><span>72</span></div>
+        <div class="bar-track"><div class="bar-fill bar-scu" data-width="64"></div></div>
+        <div class="bar-label"><span>Santa Clara</span><span>64</span></div>
+      </div>
+
+      <div class="bar-group">
+        <div class="bar-label"><strong>Alumni Network Strength</strong></div>
+        <div class="bar-track"><div class="bar-fill bar-tufts" data-width="84"></div></div>
+        <div class="bar-label"><span>Tufts — 200k+ alumni globally</span><span>84</span></div>
+        <div class="bar-track"><div class="bar-fill bar-bc" data-width="88"></div></div>
+        <div class="bar-label"><span>Boston College — well-connected, loyal alumni</span><span>88</span></div>
+        <div class="bar-track"><div class="bar-fill bar-scu" data-width="74"></div></div>
+        <div class="bar-label"><span>Santa Clara — strong in Silicon Valley tech</span><span>74</span></div>
+      </div>
+
+      <div class="bar-group">
+        <div class="bar-label"><strong>Median Salary 6 Yrs Out</strong></div>
+        <div class="bar-track"><div class="bar-fill bar-tufts" data-width="88"></div></div>
+        <div class="bar-label"><span>Tufts — ~$92k</span><span>88</span></div>
+        <div class="bar-track"><div class="bar-fill bar-bc" data-width="83"></div></div>
+        <div class="bar-label"><span>Boston College — $85.7k</span><span>83</span></div>
+        <div class="bar-track"><div class="bar-fill bar-scu" data-width="88"></div></div>
+        <div class="bar-label"><span>Santa Clara — $91.2k</span><span>88</span></div>
+      </div>
+    </div>
+
+    <div class="highlight-row">
+      <div class="highlight-box tufts">
+        <div class="small">Tufts unique advantage</div>
+        <div class="big" style="font-size:18px;font-family:'DM Sans'">Early Assurance to Tufts Med School</div>
+        <div class="small">Apply sophomore year with 3.7+ GPA</div>
+      </div>
+      <div class="highlight-box bc">
+        <div class="small">BC unique advantage</div>
+        <div class="big" style="font-size:18px;font-family:'DM Sans'">200k+ Loyal Alumni Network</div>
+        <div class="small">BCers hire BCers — tight culture</div>
+      </div>
+      <div class="highlight-box scu">
+        <div class="small">SCU unique advantage</div>
+        <div class="big" style="font-size:18px;font-family:'DM Sans'">Silicon Valley at Your Door</div>
+        <div class="small">Tech + biotech internships, Apple to startups</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SOCIAL -->
+<section id="social">
+  <div class="reveal">
+    <div class="section-label">04 — Social Scene</div>
+    <div class="section-title">What's The Vibe?</div>
+
+    <div class="vibe-grid">
+      <div class="vibe-card">
+        <div class="vibe-school">Tufts University</div>
+        <div class="vibe-name tufts">Urban Intellectual</div>
+        <div class="vibe-trait"><span class="emoji">🏙️</span> Hilltop campus, Green Line to Boston in 20 min</div>
+        <div class="vibe-trait"><span class="emoji">🧠</span> Quirky, driven, globally curious student body</div>
+        <div class="vibe-trait"><span class="emoji">🍺</span> Varied social scene — drinking not dominant</div>
+        <div class="vibe-trait"><span class="emoji">🌈</span> More diverse, more secular</div>
+        <div class="vibe-trait"><span class="emoji">🎭</span> 150+ orgs, strong arts & activism culture</div>
+        <div class="vibe-trait"><span class="emoji">✅</span> Non-drinkers report fitting in well</div>
+      </div>
+      <div class="vibe-card">
+        <div class="vibe-school">Boston College</div>
+        <div class="vibe-name bc">Spirited & Social</div>
+        <div class="vibe-trait"><span class="emoji">🏟️</span> Gorgeous Gothic campus, major D1 sports energy</div>
+        <div class="vibe-trait"><span class="emoji">🍀</span> Strong Jesuit community & service culture</div>
+        <div class="vibe-trait"><span class="emoji">🍺</span> "Work hard, play hard" — party culture is real</div>
+        <div class="vibe-trait"><span class="emoji">👔</span> Predominantly white, affluent — less diverse</div>
+        <div class="vibe-trait"><span class="emoji">🎯</span> 300+ clubs, tight school identity</div>
+        <div class="vibe-trait"><span class="emoji">⚠️</span> Non-drinkers may find social scene harder</div>
+      </div>
+      <div class="vibe-card">
+        <div class="vibe-school">Santa Clara University</div>
+        <div class="vibe-name scu">Warm & Collegiate</div>
+        <div class="vibe-trait"><span class="emoji">☀️</span> Tight 106-acre suburban campus, year-round sun</div>
+        <div class="vibe-trait"><span class="emoji">🤝</span> Cohesive, welcoming, Jesuit values culture</div>
+        <div class="vibe-trait"><span class="emoji">🍺</span> More moderate drinking culture by reports</div>
+        <div class="vibe-trait"><span class="emoji">🌏</span> Good Bay Area diversity</div>
+        <div class="vibe-trait"><span class="emoji">🏡</span> Traditional college bubble feel</div>
+        <div class="vibe-trait"><span class="emoji">✅</span> 81% say you can have great social life sober</div>
+      </div>
+    </div>
+
+    <div class="score-section">
+      <h3><span class="icon">🎉</span> Social Dimension Scores</h3>
+      <div class="bar-group">
+        <div class="bar-label"><strong>Non-Drinking Social Fit</strong></div>
+        <div class="bar-track"><div class="bar-fill bar-tufts" data-width="78"></div></div>
+        <div class="bar-label"><span>Tufts</span><span>78</span></div>
+        <div class="bar-track"><div class="bar-fill bar-bc" data-width="55"></div></div>
+        <div class="bar-label"><span>Boston College</span><span>55</span></div>
+        <div class="bar-track"><div class="bar-fill bar-scu" data-width="82"></div></div>
+        <div class="bar-label"><span>Santa Clara</span><span>82</span></div>
+      </div>
+      <div class="bar-group">
+        <div class="bar-label"><strong>Campus Beauty & Physical Environment</strong></div>
+        <div class="bar-track"><div class="bar-fill bar-tufts" data-width="74"></div></div>
+        <div class="bar-label"><span>Tufts — hilltop views</span><span>74</span></div>
+        <div class="bar-track"><div class="bar-fill bar-bc" data-width="95"></div></div>
+        <div class="bar-label"><span>Boston College — stunning Gothic architecture</span><span>95</span></div>
+        <div class="bar-track"><div class="bar-fill bar-scu" data-width="82"></div></div>
+        <div class="bar-label"><span>Santa Clara — beautiful mission-style</span><span>82</span></div>
+      </div>
+      <div class="bar-group">
+        <div class="bar-label"><strong>Cultural Diversity</strong></div>
+        <div class="bar-track"><div class="bar-fill bar-tufts" data-width="80"></div></div>
+        <div class="bar-label"><span>Tufts</span><span>80</span></div>
+        <div class="bar-track"><div class="bar-fill bar-bc" data-width="58"></div></div>
+        <div class="bar-label"><span>Boston College</span><span>58</span></div>
+        <div class="bar-track"><div class="bar-fill bar-scu" data-width="75"></div></div>
+        <div class="bar-label"><span>Santa Clara</span><span>75</span></div>
+      </div>
+      <div class="bar-group">
+        <div class="bar-label"><strong>Distance from Seattle</strong></div>
+        <div class="bar-track"><div class="bar-fill bar-tufts" data-width="45"></div></div>
+        <div class="bar-label"><span>Tufts — ~5hr flight, time zone change</span><span>45</span></div>
+        <div class="bar-track"><div class="bar-fill bar-bc" data-width="45"></div></div>
+        <div class="bar-label"><span>Boston College — same as Tufts</span><span>45</span></div>
+        <div class="bar-track"><div class="bar-fill bar-scu" data-width="85"></div></div>
+        <div class="bar-label"><span>Santa Clara — 2.5hr direct flight</span><span>85</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- DEMOGRAPHICS -->
+<section id="demographics">
+  <div class="reveal">
+    <div class="section-label">05 — People & Demographics</div>
+    <div class="section-title">Who Goes There?</div>
+
+    <div class="stats-grid" style="margin-bottom:24px">
+      <div class="stat-box tufts">
+        <div class="stat-school">Tufts — Undergrad</div>
+        <div class="stat-number">6.9K</div>
+        <div class="stat-label">Total undergraduates</div>
+      </div>
+      <div class="stat-box bc">
+        <div class="stat-school">Boston College — Undergrad</div>
+        <div class="stat-number">9.7K</div>
+        <div class="stat-label">Total undergraduates</div>
+      </div>
+      <div class="stat-box scu">
+        <div class="stat-school">Santa Clara — Undergrad</div>
+        <div class="stat-number">6.6K</div>
+        <div class="stat-label">Total undergraduates</div>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto; margin-bottom:40px;">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>🐘 Tufts</th>
+            <th>🦅 Boston College</th>
+            <th>⚡ Santa Clara</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Student-Faculty Ratio</td>
+            <td>9:1</td>
+            <td>10:1</td>
+            <td>11:1</td>
+          </tr>
+          <tr>
+            <td>Setting</td>
+            <td>Suburban Medford (near Boston)</td>
+            <td>Suburban Chestnut Hill (near Boston)</td>
+            <td>Urban Silicon Valley</td>
+          </tr>
+          <tr>
+            <td>Religious Affiliation</td>
+            <td>None (founded Universalist)</td>
+            <td>Jesuit Catholic</td>
+            <td>Jesuit Catholic</td>
+          </tr>
+          <tr>
+            <td>International Students</td>
+            <td class="winner">~22% — very international</td>
+            <td>~10%</td>
+            <td>~12%</td>
+          </tr>
+          <tr>
+            <td>Gender Split (approx)</td>
+            <td>52% F / 48% M</td>
+            <td>53% F / 47% M</td>
+            <td>51% F / 49% M</td>
+          </tr>
+          <tr>
+            <td>Grad Students on Campus</td>
+            <td class="winner">~7,000 — rich mixed campus</td>
+            <td>~5,000</td>
+            <td>~4,000</td>
+          </tr>
+          <tr>
+            <td>Avg Class Size</td>
+            <td class="winner">~20 students</td>
+            <td>~25 students</td>
+            <td>~22 students</td>
+          </tr>
+          <tr>
+            <td>Tuition (2024-25)</td>
+            <td>~$67,000</td>
+            <td>$73,508</td>
+            <td>$63,514</td>
+          </tr>
+          <tr>
+            <td>Avg Net Price (with aid)</td>
+            <td>~$36,000</td>
+            <td class="winner">$39,090 (need-blind, full need)</td>
+            <td>$44,133</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Donut charts via canvas -->
+    <div class="donut-row">
+      <div class="donut-wrap">
+        <div class="donut-title">Tufts — Ethnicity Mix</div>
+        <canvas id="donutTufts" width="200" height="200"></canvas>
+      </div>
+      <div class="donut-wrap">
+        <div class="donut-title">Boston College — Ethnicity Mix</div>
+        <canvas id="donutBC" width="200" height="200"></canvas>
+      </div>
+      <div class="donut-wrap">
+        <div class="donut-title">Santa Clara — Ethnicity Mix</div>
+        <canvas id="donutSCU" width="200" height="200"></canvas>
+      </div>
+    </div>
+
+    <!-- Legend for donuts -->
+    <div class="legend" style="justify-content:center;margin-top:8px;">
+      <div class="legend-item"><div class="legend-dot" style="background:#7EB8F7"></div>White</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#F9A55A"></div>Asian</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#66C99B"></div>Hispanic/Latino</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#E07070"></div>Black/African Am.</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#A78BFA"></div>Two+ / Other</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#94a3b8"></div>Intl / Unknown</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SPORTS -->
+<section id="sports">
+  <div class="reveal">
+    <div class="section-label">06 — Athletics</div>
+    <div class="section-title">Game Day Energy</div>
+
+    <div class="sports-grid">
+      <div class="sports-card">
+        <div class="sports-header">
+          <div class="sports-school" style="color:var(--tufts-blue)">Tufts University</div>
+          <div class="sports-conference">NESCAC</div>
+          <div class="sports-div">Division III · No Athletic Scholarships</div>
+        </div>
+        <div class="sports-body">
+          <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Sports are participatory, not a cultural centerpiece. Everyone can play. 28 varsity teams.</p>
+          <div class="sports-tag hot">⭐ Track & Field</div>
+          <div class="sports-tag hot">⭐ Rowing</div>
+          <div class="sports-tag">Swimming</div>
+          <div class="sports-tag">Soccer</div>
+          <div class="sports-tag">Tennis</div>
+          <p style="font-size:12px;color:var(--muted);margin-top:14px;">Conference peers: Amherst, Williams, Middlebury, Bowdoin — elite academic D3.</p>
+        </div>
+      </div>
+      <div class="sports-card">
+        <div class="sports-header">
+          <div class="sports-school" style="color:#E8706E">Boston College</div>
+          <div class="sports-conference">ACC</div>
+          <div class="sports-div">Division I · Full Scholarships · Power Conference</div>
+        </div>
+        <div class="sports-body">
+          <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Sports are central to campus identity. 31 varsity teams. Game days are a BIG deal.</p>
+          <div class="sports-tag hot">🏒 Hockey — elite program</div>
+          <div class="sports-tag hot">🏈 Football — ACC</div>
+          <div class="sports-tag">Basketball</div>
+          <div class="sports-tag">Lacrosse</div>
+          <div class="sports-tag">Baseball</div>
+          <p style="font-size:12px;color:var(--muted);margin-top:14px;">Conference peers: Clemson, Duke, Florida State, Notre Dame.</p>
+        </div>
+      </div>
+      <div class="sports-card">
+        <div class="sports-header">
+          <div class="sports-school" style="color:#E87A2A">Santa Clara University</div>
+          <div class="sports-conference">WCC</div>
+          <div class="sports-div">Division I · Mid-Major Conference</div>
+        </div>
+        <div class="sports-body">
+          <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Sports present but not defining. Known nationally for soccer. 17 varsity teams.</p>
+          <div class="sports-tag hot">⚽ Soccer — historic program</div>
+          <div class="sports-tag hot">🏀 Basketball — Gonzaga in conf.</div>
+          <div class="sports-tag">Tennis</div>
+          <div class="sports-tag">Golf</div>
+          <div class="sports-tag">Baseball</div>
+          <p style="font-size:12px;color:var(--muted);margin-top:14px;">Conference peers: Gonzaga, BYU, Saint Mary's — mid-major level.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="score-section" style="margin-top:32px;">
+      <h3><span class="icon">🏆</span> Athletics as Campus Experience</h3>
+      <div class="bar-group">
+        <div class="bar-label"><strong>Game Day / Fan Culture Energy</strong></div>
+        <div class="bar-track"><div class="bar-fill bar-tufts" data-width="40"></div></div>
+        <div class="bar-label"><span>Tufts — low key, participatory</span><span>40</span></div>
+        <div class="bar-track"><div class="bar-fill bar-bc" data-width="95"></div></div>
+        <div class="bar-label"><span>Boston College — electric, central to identity</span><span>95</span></div>
+        <div class="bar-track"><div class="bar-fill bar-scu" data-width="55"></div></div>
+        <div class="bar-label"><span>Santa Clara — moderate, soccer-centric</span><span>55</span></div>
+      </div>
+      <div class="bar-group">
+        <div class="bar-label"><strong>Intramural / Club Sport Access</strong></div>
+        <div class="bar-track"><div class="bar-fill bar-tufts" data-width="90"></div></div>
+        <div class="bar-label"><span>Tufts — everyone can play varsity</span><span>90</span></div>
+        <div class="bar-track"><div class="bar-fill bar-bc" data-width="82"></div></div>
+        <div class="bar-label"><span>Boston College — 40+ intramural teams</span><span>82</span></div>
+        <div class="bar-track"><div class="bar-fill bar-scu" data-width="78"></div></div>
+        <div class="bar-label"><span>Santa Clara</span><span>78</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- VERDICT -->
+<section id="verdict">
+  <div class="reveal">
+    <div class="section-label">07 — The Verdict</div>
+    <div class="section-title">Bottom Line</div>
+
+    <div style="overflow-x:auto; margin-bottom:40px;">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>🐘 Tufts</th>
+            <th>🦅 Boston College</th>
+            <th>⚡ Santa Clara</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Overall Academics</td>
+            <td><span class="badge badge-win">Winner</span></td>
+            <td><span class="badge badge-win">Co-Winner</span></td>
+            <td><span class="badge badge-ok">Strong</span></td>
+          </tr>
+          <tr>
+            <td>Biology / Sciences</td>
+            <td><span class="badge badge-win">Winner</span></td>
+            <td><span class="badge badge-ok">Weak</span></td>
+            <td><span class="badge badge-ok">Good</span></td>
+          </tr>
+          <tr>
+            <td>Premed Path</td>
+            <td><span class="badge badge-win">Winner</span></td>
+            <td><span class="badge badge-ok">OK</span></td>
+            <td><span class="badge badge-ok">OK</span></td>
+          </tr>
+          <tr>
+            <td>Biotech / PhD Path</td>
+            <td><span class="badge badge-win">Winner</span></td>
+            <td><span class="badge badge-ok">OK</span></td>
+            <td><span class="badge badge-ok">Good</span></td>
+          </tr>
+          <tr>
+            <td>Undergrad Teaching</td>
+            <td><span class="badge badge-ok">Great</span></td>
+            <td><span class="badge badge-win">Winner (#6 US)</span></td>
+            <td><span class="badge badge-ok">Great</span></td>
+          </tr>
+          <tr>
+            <td>Campus Beauty</td>
+            <td><span class="badge badge-ok">Nice</span></td>
+            <td><span class="badge badge-win">Winner</span></td>
+            <td><span class="badge badge-ok">Beautiful</span></td>
+          </tr>
+          <tr>
+            <td>Non-Drinking Social Fit</td>
+            <td><span class="badge badge-ok">Good</span></td>
+            <td><span class="badge badge-ok">Tough</span></td>
+            <td><span class="badge badge-win">Winner</span></td>
+          </tr>
+          <tr>
+            <td>Sports Culture</td>
+            <td><span class="badge badge-ok">Low key</span></td>
+            <td><span class="badge badge-win">Winner</span></td>
+            <td><span class="badge badge-ok">Mid</span></td>
+          </tr>
+          <tr>
+            <td>Distance from Seattle</td>
+            <td><span class="badge badge-ok">Far</span></td>
+            <td><span class="badge badge-ok">Far</span></td>
+            <td><span class="badge badge-win">Winner</span></td>
+          </tr>
+          <tr>
+            <td>Diversity</td>
+            <td><span class="badge badge-win">Winner</span></td>
+            <td><span class="badge badge-ok">Low</span></td>
+            <td><span class="badge badge-ok">Good</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+  </div>
+</section>
+
+<footer>
+  Made for <span>Elliott</span> · Class of 2028 · Your choice 🎂
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+// NAV SCROLL
+function scrollTo(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ACTIVE NAV
+const sections = ['academics','biology','career','social','demographics','sports','verdict'];
+const navBtns = document.querySelectorAll('.nav-btn');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = sections.indexOf(e.target.id);
+      navBtns.forEach((b,i) => b.classList.toggle('active', i === idx));
+    }
+  });
+}, { rootMargin: '-40% 0px -55% 0px' });
+
+sections.forEach(id => { const el = document.getElementById(id); if(el) observer.observe(el); });
+
+// REVEAL ON SCROLL
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // animate bars inside
+      e.target.querySelectorAll('.bar-fill').forEach(bar => {
+        bar.style.width = bar.dataset.width + '%';
+      });
+    }
+  });
+}, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// DONUT CHARTS
+const donutColors = ['#7EB8F7','#F9A55A','#66C99B','#E07070','#A78BFA','#94a3b8'];
+const donutLabels = ['White','Asian','Hispanic/Latino','Black/Afr. Am.','Two+/Other','Intl/Unknown'];
+
+function makeDonut(id, data) {
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: donutLabels,
+      datasets: [{ data, backgroundColor: donutColors, borderWidth: 0, hoverOffset: 4 }]
+    },
+    options: {
+      cutout: '65%',
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed}%` }
+        }
+      }
+    }
+  });
+}
+
+// Approximate demographics (%) — Tufts, BC, SCU
+makeDonut('donutTufts', [42, 14, 8, 5, 9, 22]);
+makeDonut('donutBC',    [66,  9, 9, 4, 6,  6]);
+makeDonut('donutSCU',   [38, 20,18, 4, 8, 12]);
+</script>
+</body>
+</html>
